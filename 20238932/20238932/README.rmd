@@ -1,0 +1,112 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+# Purpose
+
+The aim of this folder is to.... (Explain yourself here)
+
+Load in coding scripts
+
+```{r}
+
+rm(list = ls()) # Clean your environment:
+gc() # garbage collection - It can be useful to call gc after a large object has been removed, as this may prompt R to return memory to the operating system.
+library(pacman)
+p_load(tidyverse, rmsfuns)
+
+# Source in all your functions:
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+
+Result <- example_function(x = 10, y = 20)
+
+
+```
+
+#Question 1
+
+# Data loading
+
+```{r}
+movies_data<- read.csv("C:/Users/Andre/Documents/20238932/20238932/data/Movies/Movies.csv")
+```
+
+#Rotten Tomatoes plot
+
+```{r}
+movies_data %>% 
+  select("Rotten.Tomatoes..") %>% 
+  filter(Rotten.Tomatoes..>80) %>% 
+ggplot()+
+  geom_point(aes(x= "Rotten.Tomatoes..", y="Audience rating"))+
+  labs(title = "Movies with excellent ratings", subtitle= "Movie Data", x = "Rotten.Tomatoes..", y = "Audience rating")
+
+```
+
+#Disney profitability plot
+
+```{r}
+#Disney profitability plot
+
+  movies_data %>% 
+    select("Lead.Studio", "Profitability") %>% 
+    ggplot()+
+    geom_point(aes(x= "Lead.Studio", y="Profitability"))+
+    labs(title = "Profitability of Lead Studio's", subtitle= "Movie Data", x = "Lead Studio", y = "Profitability")+
+    scale_color_manual(values=c("dodgerblue4", "darkolivegreen4",
+                                "darkorchid3", "goldenrod1"))
+
+```
+
+#Question 2
+
+#Loading data
+```{r}
+
+#loading data
+
+data_forbes<-function(data){
+  library(data.table)
+  setwd("C:/Users/Andre/Documents/20238932/20238932/data/Forbes")
+  files<-list.files(pattern = ".csv")
+  temp<-lapply(files, fread, sep=",")
+  data<-rbindlist(temp)
+  #write.csv(data, file = "happy_group.csv", row.names = FALSE)
+  data
+}
+  
+
+```
+
+
+Plot of the net worth of individuals
+```{r}
+
+data %>% 
+  select("Name", "NetWorth") %>%
+  ggplot()+
+  geom_point(aes(x= "Name", y="Networth"))+
+  labs(title = "Networth of Most Wealthy Individuals", subtitle= "Forbes data", x = "Names", y = "Networth")+
+  scale_color_manual(values=c("dodgerblue4", "darkolivegreen4",
+                              "darkorchid3", "goldenrod1"))
+
+
+```
+```{r}
+```
+Plotting country of origin of wealthy individuals
+
+```{r}
+data %>% 
+  select("Name", "Country") %>%
+  ggplot()+
+  geom_point(aes(x= "Name", y="Country"))+
+  labs(title = "Country of origin of wealthy individuals", subtitle= "Forbes data", x = "Names", y = "Networth")+
+  scale_color_manual(values=c("dodgerblue4", "darkolivegreen4",
+                              "darkorchid3", "goldenrod1"))
+```
+
+
+```{r}
